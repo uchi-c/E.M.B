@@ -276,25 +276,6 @@ h1,h2,h3,h4{
   cursor:pointer;
 }
 
-@media (max-width: 860px){
-  .nav-toggle{ display:flex; }
-  .nav{
-    position:fixed;
-    inset:64px 0 0 0;
-    background:var(--bg);
-    flex-direction:column;
-    align-items:flex-start;
-    padding:2rem var(--gutter);
-    gap:1.4rem;
-    transform:translateY(-8px);
-    opacity:0;
-    pointer-events:none;
-    transition:opacity 0.2s ease, transform 0.2s ease;
-  }
-  .nav[data-open="true"]{ opacity:1; transform:translateY(0); pointer-events:auto; }
-  .nav a{ font-size:1.1rem; }
-}
-
 /* ---- footer ----------------------------------------------------------- */
 .site-footer{
   background:var(--brand-navy);
@@ -685,3 +666,124 @@ table.spec-table th,table.spec-table td{ text-align:left; padding:0.85rem 1rem; 
 table.spec-table th{ font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-soft); font-weight:500; }
 table.spec-table td:first-child, table.spec-table th:first-child{ padding-left:0; }
 .table-wrap{ overflow-x:auto; }
+
+/* nav collapses a little earlier now the bar carries more items */
+@media (max-width: 1040px){
+  .nav-toggle{ display:flex; }
+  .nav{
+    position:fixed;
+    inset:64px 0 0 0;
+    background:var(--bg);
+    flex-direction:column;
+    align-items:flex-start;
+    padding:2rem var(--gutter);
+    gap:1.4rem;
+    transform:translateY(-8px);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.2s ease, transform 0.2s ease;
+  }
+  .nav[data-open="true"]{ opacity:1; transform:translateY(0); pointer-events:auto; }
+  .nav a{ font-size:1.1rem; }
+}
+
+/* ==========================================================================
+   WhatsApp floating button
+   ========================================================================== */
+.whatsapp-float{
+  position:fixed;
+  right:1.3rem; bottom:1.3rem;
+  z-index:70;
+  width:56px; height:56px;
+  border-radius:50%;
+  background:#25d366;
+  color:#fff;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 12px 28px -10px rgba(10,20,10,0.55);
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration:none;
+}
+.whatsapp-float:hover{ transform:scale(1.08) translateY(-2px); box-shadow:0 16px 32px -8px rgba(10,20,10,0.6); }
+.whatsapp-float svg{ width:28px; height:28px; }
+@media (max-width:640px){ .whatsapp-float{ width:50px; height:50px; right:1rem; bottom:1rem; } .whatsapp-float svg{ width:25px; height:25px; } }
+
+/* ==========================================================================
+   FAQ accordion
+   ========================================================================== */
+.faq-list{ border-top:1px solid var(--line); max-width:76ch; }
+.faq-item{ border-bottom:1px solid var(--line); }
+.faq-q{
+  width:100%; text-align:left; background:none; border:none; padding:1.35rem 0;
+  display:flex; justify-content:space-between; align-items:center; gap:1.2rem; cursor:pointer;
+  font-family:var(--font-body); font-weight:600; font-size:1.04rem; color:var(--text);
+}
+.faq-q .icon{
+  flex:none; width:24px; height:24px; border:1px solid var(--line-strong); border-radius:50%;
+  display:flex; align-items:center; justify-content:center; font-family:var(--font-mono);
+  font-size:1rem; color:var(--accent); transition:transform 0.25s ease; line-height:1;
+}
+.faq-item[data-open="true"] .faq-q .icon{ transform:rotate(45deg); }
+.faq-a{ max-height:0; overflow:hidden; transition:max-height 0.35s ease; }
+.faq-item[data-open="true"] .faq-a{ max-height:420px; }
+.faq-a p{ margin:0 0 1.35rem; color:var(--text-soft); max-width:64ch; }
+
+/* ==========================================================================
+   Gallery grid + lightbox (Projects page, cert previews)
+   ========================================================================== */
+.gallery-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(0.7rem,1.6vw,1.1rem); }
+@media (max-width:920px){ .gallery-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:560px){ .gallery-grid{ grid-template-columns:1fr; } }
+.gallery-item{
+  position:relative; aspect-ratio:4/3; overflow:hidden; border-radius:3px;
+  cursor:zoom-in; border:1px solid var(--line); background:var(--bg-sunken);
+}
+.gallery-item img{ width:100%; height:100%; object-fit:cover; transition:transform 0.6s ease; display:block; }
+.gallery-item:hover img{ transform:scale(1.08); }
+.gallery-cap{
+  position:absolute; inset:auto 0 0 0; padding:0.8rem 1rem 0.7rem;
+  background:linear-gradient(0deg, rgba(9,11,18,0.85), transparent 100%);
+  color:#f4f2ec; font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.04em; text-transform:uppercase;
+  opacity:0; transform:translateY(6px); transition:opacity 0.25s ease, transform 0.25s ease;
+}
+.gallery-item:hover .gallery-cap{ opacity:1; transform:none; }
+
+.lightbox{
+  position:fixed; inset:0; z-index:200; background:rgba(8,10,17,0.94);
+  display:flex; align-items:center; justify-content:center; padding:5vh 4vw;
+  opacity:0; pointer-events:none; transition:opacity 0.25s ease;
+}
+.lightbox[data-open="true"]{ opacity:1; pointer-events:auto; }
+.lightbox img{ max-width:min(1150px,92vw); max-height:82vh; object-fit:contain; border-radius:3px; display:block; margin:0 auto; }
+.lightbox-cap{ position:absolute; left:0; right:0; bottom:2.2rem; text-align:center; color:#c3c9dc; font-family:var(--font-mono); font-size:0.78rem; letter-spacing:0.05em; padding-inline:2rem; }
+.lightbox-close,.lightbox-prev,.lightbox-next{
+  position:absolute; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.25); color:#fff;
+  width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer;
+  transition:background 0.2s ease;
+}
+.lightbox-close:hover,.lightbox-prev:hover,.lightbox-next:hover{ background:rgba(255,255,255,0.2); }
+.lightbox-close{ top:1.6rem; right:1.6rem; }
+.lightbox-prev{ left:1.6rem; top:50%; transform:translateY(-50%); }
+.lightbox-next{ right:1.6rem; top:50%; transform:translateY(-50%); }
+@media (max-width:680px){ .lightbox-prev,.lightbox-next{ display:none; } }
+
+/* filter pills reuse tab-btn look on the projects page */
+.filter-row{ display:flex; gap:0.5rem; flex-wrap:wrap; margin-bottom:2.2rem; }
+
+/* ==========================================================================
+   Certification cards
+   ========================================================================== */
+.cert-card{ display:flex; flex-direction:column; height:100%; }
+.cert-thumb{ aspect-ratio:3/4; overflow:hidden; background:var(--bg-sunken); border-bottom:1px solid var(--line); cursor:zoom-in; }
+.cert-thumb img{ width:100%; height:100%; object-fit:cover; object-position:top center; transition:transform 0.5s ease; display:block; }
+.cert-card:hover .cert-thumb img{ transform:scale(1.045); }
+.cert-download{
+  display:inline-flex; align-items:center; gap:0.5em; margin-top:1rem;
+  font-family:var(--font-mono); font-size:0.76rem; letter-spacing:0.05em; text-transform:uppercase;
+  color:var(--accent); text-decoration:none;
+}
+.cert-download:hover{ text-decoration:underline; }
+
+/* ==========================================================================
+   Animated stat counters (data-count elements)
+   ========================================================================== */
+[data-count]{ font-variant-numeric:tabular-nums; }
